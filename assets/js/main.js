@@ -274,22 +274,3 @@ document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
-document.getElementById("contact-form").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  // Show loading
-  document.querySelector(".loading").style.display = "block";
-  document.querySelector(".error-message").style.display = "none";
-  document.querySelector(".sent-message").style.display = "none";
-
-  emailjs.sendForm("service_a08jtac", "YOUR_TEMPLATE_ID", this)
-    .then(function() {
-      document.querySelector(".loading").style.display = "none";
-      document.querySelector(".sent-message").style.display = "block";
-    }, function(error) {
-      document.querySelector(".loading").style.display = "none";
-      document.querySelector(".error-message").style.display = "block";
-      document.querySelector(".error-message").innerText = "Failed to send: " + JSON.stringify(error);
-    });
-});
-
