@@ -55,6 +55,8 @@
     });
   }
 
+
+  
   /**
    * Scroll top button
    */
@@ -76,6 +78,17 @@
   window.addEventListener('load', toggleScrollTop);
   document.addEventListener('scroll', toggleScrollTop);
 
+document.getElementById("downloadCvBtn").addEventListener("click", function(e) {
+    e.preventDefault(); // Prevent default link navigation
+    const link = document.createElement("a");
+    link.href = "assets/img/cv/Thilina-Manoj-FlowCV-.pdf";
+    link.download = "Thilina-Manoj-CV.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+
+  
   /**
    * Animation on scroll function and init
    */
@@ -137,35 +150,69 @@
   /**
    * Init isotope layout and filters
    */
-  document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
-    let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
-    let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
-    let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
+document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
+  let layout = isotopeItem.getAttribute('data-layout') ?? 'masonry';
+  let filter = isotopeItem.getAttribute('data-default-filter') ?? '*';
+  let sort = isotopeItem.getAttribute('data-sort') ?? 'original-order';
 
-    let initIsotope;
-    imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
-      initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
-        itemSelector: '.isotope-item',
-        layoutMode: layout,
-        filter: filter,
-        sortBy: sort
-      });
+  let initIsotope;
+  imagesLoaded(isotopeItem.querySelector('.isotope-container'), function() {
+    initIsotope = new Isotope(isotopeItem.querySelector('.isotope-container'), {
+      itemSelector: '.isotope-item',
+      layoutMode: layout,
+      filter: filter,
+      sortBy: sort
     });
-
-    isotopeItem.querySelectorAll('.isotope-filters li').forEach(function(filters) {
-      filters.addEventListener('click', function() {
-        isotopeItem.querySelector('.isotope-filters .filter-active').classList.remove('filter-active');
-        this.classList.add('filter-active');
-        initIsotope.arrange({
-          filter: this.getAttribute('data-filter')
-        });
-        if (typeof aosInit === 'function') {
-          aosInit();
-        }
-      }, false);
-    });
-
   });
+
+  // Only filterable items (exclude parent dropdown <li>)
+  isotopeItem.querySelectorAll('.isotope-filters li[data-filter]').forEach(function(filterBtn) {
+    filterBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      // Remove active class
+      isotopeItem.querySelectorAll('.isotope-filters .filter-active')
+        .forEach(el => el.classList.remove('filter-active'));
+
+      this.classList.add('filter-active');
+
+      // Filter Isotope
+      initIsotope.arrange({
+        filter: this.getAttribute('data-filter')
+      });
+
+      // Close dropdown menu if clicked inside
+      let dropdown = this.closest('.dropdown');
+      if (dropdown) {
+        dropdown.querySelector('.dropdown-menu').style.display = 'none';
+      }
+
+      // Reinit AOS if available
+      if (typeof aosInit === 'function') {
+        aosInit();
+      }
+    });
+  });
+
+  // Dropdown toggle
+  isotopeItem.querySelectorAll('.portfolio-filters .dropdown > a').forEach(function(toggle) {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      let menu = this.nextElementSibling;
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
+  });
+
+  // Auto-close dropdown on outside click
+  document.addEventListener('click', function(e) {
+    document.querySelectorAll('.portfolio-filters .dropdown-menu').forEach(menu => {
+      if (!menu.parentElement.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+  });
+});
+
 
   /**
    * Init swiper sliders
