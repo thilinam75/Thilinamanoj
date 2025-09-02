@@ -452,6 +452,22 @@ h6 {
   bottom: 15px;
 }
 
+
+.cv-download {
+  display: inline-block;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  color: blue;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.cv-download:hover {
+  transform: translateY(-3px); /* Slight lift on hover */
+}
+
+
 /*--------------------------------------------------------------
 # Disable aos animation delay on mobile devices
 --------------------------------------------------------------*/
@@ -684,38 +700,38 @@ section,
 /*--------------------------------------------------------------
 # Skills Section
 --------------------------------------------------------------*/
-.skills .progress {
-  height: 60px;
-  display: block;
-  background: none;
-  border-radius: 0;
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-.skills .progress .skill {
-  color: var(--heading-color);
-  padding: 0;
-  margin: 0 0 6px 0;
-  text-transform: uppercase;
-  display: block;
-  font-weight: 600;
-  font-family: var(--heading-font);
+.skill-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgb(255, 255, 255);
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--nav-mobile-background-color);
+    transition: all 0.3s ease;
 }
 
-.skills .progress .skill .val {
-  float: right;
-  font-style: normal;
+.skill-item i {
+    font-size: 3.5rem;
+    color: var(--main-color);
+    margin-right: 2rem;
 }
 
-.skills .progress-bar-wrap {
-  background: color-mix(in srgb, var(--default-color), transparent 90%);
-  height: 10px;
-}
-
-.skills .progress-bar {
-  width: 1px;
-  height: 10px;
-  transition: 0.9s;
-  background-color: var(--accent-color);
+.skill-item:hover {
+    transform: translateY(-5px);
+    background: lightgrey;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
 }
 
 /*--------------------------------------------------------------
@@ -780,6 +796,11 @@ section,
 /*--------------------------------------------------------------
 # Portfolio Section
 --------------------------------------------------------------*/
+/* ===============================
+   Portfolio Filters + Dropdown
+================================= */
+
+/* Main Filters */
 .portfolio .portfolio-filters {
   padding: 0;
   margin: 0 auto 20px auto;
@@ -790,6 +811,7 @@ section,
 .portfolio .portfolio-filters li {
   cursor: pointer;
   display: inline-block;
+  position: relative; /* Needed for dropdown */
   padding: 0;
   font-size: 14px;
   font-weight: 400;
@@ -798,6 +820,7 @@ section,
   text-transform: uppercase;
   margin-bottom: 10px;
   transition: all 0.3s ease-in-out;
+  color: #333; /* default text color */
 }
 
 .portfolio .portfolio-filters li:hover,
@@ -813,12 +836,80 @@ section,
   margin-right: 0;
 }
 
+/* Dropdown container */
+.portfolio-filters .dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Projects main link */
+.portfolio-filters .dropdown > a {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 400;
+  color: inherit;
+  padding: 0 8px;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Hover effect for Projects */
+.portfolio-filters .dropdown:hover > a,
+.portfolio-filters .dropdown > a.filter-active {
+  color: var(--accent-color);
+}
+
+/* Dropdown menu */
+.portfolio-filters .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%; /* ensures it drops just below Projects */
+  left: 0;
+  background: white;
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+  min-width: 160px;
+}
+
+/* Show on hover */
+.portfolio-filters .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Submenu items */
+.portfolio-filters .dropdown-menu li {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color:black;
+  white-space: nowrap;
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.portfolio-filters .dropdown-menu li:hover {
+  color: var(--accent-color);
+
+}
+
+
+/* Mobile Fix */
 @media (max-width: 575px) {
   .portfolio .portfolio-filters li {
     font-size: 14px;
     margin: 0 5px;
   }
+
+  .portfolio-filters .dropdown-menu {
+    min-width: 140px;
+    font-size: 13px;
+  }
 }
+
 
 .portfolio .portfolio-content {
   position: relative;
